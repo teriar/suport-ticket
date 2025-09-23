@@ -3,52 +3,55 @@ name: CI/CD Angular Docker → Azure
 on:
   push:
     branches:
-      - main
+      - main  # O la rama que uses para deploy automático
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Clonar repo
+      # 1️⃣ Clonar repo
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Instalar Node.js
+# 5️⃣ Login a Azure usando Service Principal
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}"}'
+          auth-type: service-principal
+
+
+      # 2️⃣ Instalar Node.js
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '22'
 
-      # 3. Instalar dependencias
+      # 3️⃣ Instalar dependencias
       - name: Install dependencies
         run: npm install
 
-      # 4. Build Angular
+      # 4️⃣ Build Angular
       - name: Build Angular
         run: npm run build --prod
 
-      # 5. Docker login a ACR
-      - name: Login to ACR
+      
+
+      # 6️⃣ Login a ACR
+      - name: Docker login to ACR
         run: echo ${{ secrets.ACR_PASSWORD }} | docker login ${{ secrets.ACR_LOGIN_SERVER }} -u ${{ secrets.ACR_USERNAME }} --password-stdin
 
-      # 6. Construir imagen Docker
+      # 7️⃣ Build imagen Docker
       - name: Build Docker image
         run: docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/ticket-angular:latest .
 
-      # 7. Push a ACR
+      # 8️⃣ Push Docker image a ACR
       - name: Push Docker image to ACR
         run: docker push ${{ secrets.ACR_LOGIN_SERVER }}/ticket-angular:latest
 
-       # 8. Azure Login
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: '{"clientId":"${{secrets.AZURE_CLIENT_ID}}","tenantId":"${{secrets.AZURE_TENANT_ID}}","clientSecret":"${{secrets.AZURE_CLIENT_SECRET}}","subscriptionId":"${{secrets.AZURE_SUBSCRIPTION_ID}}"}'
-          auth-type: service-principal
-
-      # 9. Deploy a Azure App Service
-      - name: Deploy to Azure App Service
+      # 9️⃣ Deploy a Azure Web App
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ secrets.AZURE_APP_SERVICE }}
