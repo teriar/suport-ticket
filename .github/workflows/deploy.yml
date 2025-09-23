@@ -19,7 +19,7 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-       
+          enable-AzPSSession: true
 
 
       # 2️⃣ Instalar Node.js
@@ -50,9 +50,18 @@ jobs:
       - name: Push Docker image to ACR
         run: docker push ${{ secrets.ACR_LOGIN_SERVER }}/ticket-angular:latest
 
-      # 9️⃣ Deploy a Azure Web App
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ secrets.AZURE_APP_SERVICE }}
-          images: ${{ secrets.ACR_LOGIN_SERVER }}/ticket-angular:latest
+      # 8️⃣ ACTUALIZAR CONFIGURACIÓN DE APP SERVICE (NUEVO PASO)
+      - name: Update App Service Container Configuration
+        run: |
+          az webapp config container set \
+            --name ticketSystemDemo \
+            --resource-group ticketSystemte_group \
+            --docker-custom-image-name ${{ secrets.ACR_LOGIN_SERVER }}/ticket-angular:latest \
+            --docker-registry-server-url https://${{ secrets.ACR_LOGIN_SERVER }} \
+            --docker-registry-server-user ${{ secrets.ACR_USERNAME }} \
+            --docker-registry-server-password ${{ secrets.ACR_PASSWORD }}
+
+      # 9️⃣ Reiniciar App Service para aplicar cambios
+      - name: Restart Web App
+        run: |
+          az webapp restart --name ticketSystemDemo --resource-group ticketSystemte_group
