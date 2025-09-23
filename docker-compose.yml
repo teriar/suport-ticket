@@ -1,0 +1,8 @@
+version: "1.0"
+services:
+  ticket-angular:
+    build: .
+    container_name: ticket-angular
+    ports:
+      - "3000:80"
+    

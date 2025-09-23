@@ -27,6 +27,7 @@
               }
             ],
             "styles": [
+              "node_modules/animate.css/animate.min.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -92,5 +93,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "54fd1f98-c97f-4579-8b03-42ff3e37a5dd"
   }
 }
