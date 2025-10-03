@@ -1,0 +1,117 @@
+<div class="grid place-items-center h-screen bg-gradient-to-bl from-violet-500 to-fuchsia-500">
+ <div class="absolute top-2 right-2 flex items-center gap-2 z-50">
+    <span class="text-white dark:text-gray-200 font-semibold">Registro</span>
+    <button (click)="toggleFlip()"
+            class="w-12 h-12 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center shadow-md transition-transform duration-300"
+            [class.rotate-180]="isFlipped">
+      <i class="pi pi-arrow-right text-xl text-blue-500 dark:text-blue-400"></i>
+    </button>
+  </div>
+  <div class="max-w-sm w-full scene relative">
+
+ 
+
+    <div class="card relative w-full h-[500px] panel bg-white mt-5 " [class.is-flipped]="isFlipped">
+      <!-- LOGIN -->
+      <div class="face face--front flex flex-col h-full backface-hidden [backface-visibility:hidden]">
+        <div class="bg-gradient-to-r from-violet-400 to-fuchsia-400 px-4 py-2 text-white font-semibold ">
+          Ticket Radiant
+        </div>
+        <div class="p-4 flex-1 overflow-auto">
+          <h2 class="text-xl font-bold mb-2">Inicie sesión para revisar y/o abrir nuevo ticket</h2>
+          <form class="mt-5 space-y-4" autocomplete="off" [formGroup]="loginForm">
+            <div>
+              <label for="nick" class="block text-sm font-medium text-gray-900">Usuario:</label>
+              <input id="nick" type="text" required placeholder="ingrese" formControlName="usuario"
+                class="mt-1 border border-gray-500 block w-full rounded-md px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-2 focus:outline-violet-400 sm:text-sm" />
+                <span class="text-sm text-red-500 mt-1" *ngIf="campoEsValidoLogin('usuario')">
+                  campo debe ser de 5 digitos, no unicamente numeros.
+                </span>
+            </div>
+            <div>
+              <label for="password" class="block text-sm font-medium text-gray-900">Contraseña:</label>
+              <input id="password" type="password"  placeholder="*****"  formControlName="password"
+                class="mt-1 border border-gray-500 block w-full rounded-md px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-2 focus:outline-violet-400 sm:text-sm" />
+                <span class="text-sm text-red-500 mt-1" *ngIf="campoEsValidoLogin('password')">
+                 Contraseña requerida.
+                </span>
+            </div>
+          </form>
+
+           <button (click)="CaptchaOnClick($event)"
+            class=" mt-5 bg-blue-400 text-white px-4 py-2 rounded-md hover:opacity-90 active:scale-95 border-2 border-violet-500">
+            No soy un robot
+          </button> 
+        
+                  <div class="mt-5" id="buttonDiv"></div>
+
+
+        </div>
+        <div class="px-4 py-2 bg-gray-100 text-right">
+         
+          <button pbutton 
+          class="bg-gradient-to-r from-violet-400 to-blue-400 text-white px-4 py-1 rounded-md hover:opacity-90 active:scale-95 border-2 border-violet-500" 
+           (click)="loggin($event)" 
+           (keydown)="null"
+           >Guardar</button> 
+          
+     
+        </div>
+      </div>
+
+      <!-- REGISTRO -->
+      <div class="face face--back flex flex-col h-full rotate-y-180 [backface-visibility:hidden]">
+        <div class="bg-gradient-to-r from-violet-400 to-fuchsia-400 px-4 py-2 text-white font-semibold ">
+          Registro
+        </div>
+        <div class="p-4 flex-1 overflow-auto">
+          <h2 class="text-xl font-bold mb-2">Crear cuenta</h2>
+          <p class="text-gray-600 mb-4">Regístrate en pocos pasos</p>
+          <form class="space-y-4" autocomplete="off" [formGroup]="newUserForm">
+            <div>
+              <label class=" text-sm font-medium text-gray-900" for="nick">Nick:</label>
+              <input id="nick" type="text" required placeholder="Tu nombre" formControlName="nick"
+                class="mt-1 border border-gray-500 block w-full rounded-md px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-2 focus:outline-violet-400 sm:text-sm" />
+                 <span class="text-sm text-red-500 mt-1" *ngIf="campoEsValidoNewUser('nick')">
+                 Se requiere Nick.
+                </span>
+            </div>
+            <div>
+              <label class=" text-sm font-medium text-gray-900" for="mail">Correo:</label>
+              <input type="email" required placeholder="tucorreo@ejemplo.com" id="mail" formControlName="mail"
+                class="mt-1 border border-gray-500 block w-full rounded-md px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-2 focus:outline-violet-400 sm:text-sm" />
+                 <span class="text-sm text-red-500 mt-1" *ngIf="campoEsValidoNewUser('mail')">
+                 Se requiere correo valido.
+                </span>
+            </div>
+            <div>
+              <label class="text-sm font-medium text-gray-900" for="passwordNew">Contraseña:</label>
+              <input type="password" required placeholder="••••••" id="passwordNew" formControlName="password"
+                class="mt-1 border border-gray-500 block w-full rounded-md px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-2 focus:outline-violet-400 sm:text-sm" />
+                 <span class="text-sm text-red-500 mt-1" *ngIf="campoEsValidoNewUser('password')">
+                 Contraseña requerida.
+                </span>
+            </div>
+             <button (click)="CaptchaOnClick($event)"
+            class=" mt-5 bg-blue-400 text-white px-4 py-2 rounded-md hover:opacity-90 active:scale-95 border-2 border-violet-500">
+            No soy un robot
+          </button> 
+          </form>
+        </div>
+        <div class="px-4 py-2 bg-gray-100 text-right">
+          <button pbutton 
+          class="bg-gradient-to-r from-violet-400 to-blue-400 text-white px-4 py-1 rounded-md hover:opacity-90 active:scale-95 border-2 border-violet-500" 
+           (click)="loggin($event)" 
+           (keydown)="null"
+           >Registrarse</button> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>
