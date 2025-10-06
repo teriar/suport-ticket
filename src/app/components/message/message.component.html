@@ -1,0 +1,17 @@
+
+
+
+<p-dialog header="{{mensaje.header}}" (onHide)="close()" [modal]="true" [(visible)]="mostrar" [style]="{ width: '20rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+    <div class="flex flex-col ">
+
+        <div class="text-center justify-items-center">
+            <div class="w-40    rounded-sm p-2">    
+                <i class="{{mensaje.icon}}" style="font-size: 2.5rem"
+                [style.color]="mensaje.colorIcon"></i>
+                <p class="italic">
+                    {{mensaje.mensaje}}
+                </p>
+            </div>
+        </div>
+    </div>
+</p-dialog>
