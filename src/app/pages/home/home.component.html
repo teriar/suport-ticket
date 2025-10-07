@@ -1,18 +1,17 @@
-<!-- Botón para abrir el sidebar -->
+
 <div class="p-4">
   <button (click)="sidebarVisible = true" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-    Abrir Sidebar
+    Menu de ejemplo como componente
   </button>
 </div>
 
-<!-- Componente Sidebar -->
+
+<div class="p-4 mt-4 flex-col text-center">
 <app-sidebar [(visible)]="sidebarVisible"></app-sidebar>
 
-<!-- Contenido principal -->
-<div class="p-4 mt-4">
-  <h1 class="text-2xl font-bold mb-4">Bienvenido al Dashboard</h1>
-  <p class="text-gray-700">Aquí va el contenido principal de tu página.</p>
-   <div class="container-ticket flex flex-wrap ">
+<h1 class="text-2xl font-bold mb-4">Bienvenido al Home</h1>
+<p class="text-gray-700">Pagina simple para verificar autentificacion, mantiene dos componentes uno para contrar suo correcto de for</p>
+   <div class="container-ticket flex flex-wrap mt-5 ">
        <app-card-ticket class="flex-1" *ngFor="let item of pruebas" [ticket]="item" ></app-card-ticket>
     </div>
 

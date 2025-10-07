@@ -1,59 +1,56 @@
-# TicketDemo
+# Front de login con angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.11.
+## herramientas utilizadas
+ -angular.js 19.2.17 con assets
+ -tailwindcss 
+ -primeng
 
-## Development server
+ ## estructura
 
-To start a local development server, run:
+ - components -> componentes reutilizables que reciben objetos para su funcionalidad
+ - enviroment -> varibles de entorno para rutas y valores
+ - guard -> encargado de protejer rutas que requieren autentificacion
+ - layouts -> puntos de entrada para spa para diferencias rutas protejidas
+ - pages -> paginas dentro del aplicativo unicas
+ - services -> encargado de peticiones http para envio y recepcion de respuestas por parte del backen
+ - validators -> utlidades de validacion de parametros
+ - interfaces -> interfaces para declarar estructuras de datos
+ - ## elementos raices
+   * app.component.ts - app.component.html -> paginas de inicio realiza la tarea de inicializar el router y permite realizar importaciones de nivel alto
+   * app.route.ts -> configuracion de rutas dentro del aplicativo donde se declaran la pagina main (layouts) y sus hijos para  redireccion asi como declaracion de guard para proteccion de rutas
+   * main.ts -> core de configuracion de angular y arranque principal
 
-```bash
-ng serve
-```
+## ejecuccion
+### Nota: para ejecutar se requiere instalacion de angular 19 y Node en el S.O
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+1. ejecutar npm install para descargar dependencias
+2. completar enviroment.ts en caso de ser necesario , para deploy se requiere generar enviroment.prod.ts y completar las variables de entorno requeridas que se encuentran en enviroment.ts
+3. ejecutar ng serve -o || ng serve --port {valor}, adicional se puede configurar comandos para su ejecucion en angular.json
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## guia ilustrada
 
-```bash
-ng generate component component-name
-```
+1. pagina de login y registros 
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+   ![alt text](/Readme-images/login.png)  
 
-```bash
-ng generate --help
-```
+  Pagina de Inicio, para habilitar su funcionalidad se require presionar boton No soy un robot que se conecta con servicio de google desde el backen y permite habilitar los formularios, opcion secundaria es loggearse con google 
 
-## Building
+2. Funcionalidad Registo 
+  
+   ![alt text](/Readme-images/register.png)
 
-To build the project run:
+   Dentro de la pagina de inicio al presional el boton de registro  cambia a este apartado, de igual manera permite registro con google o el registro usual donde se debe ingresar nick , mail, y password para poder registrarse  
 
-```bash
-ng build
-```
+3. Aclaratoria de funciones
+    
+    ![alt text](/Readme-images/validaciones.png)
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+  el sistema mantiene sus formularios por formularios reactivos con validaciones internas consultado a la api antes de intentar registrarse para advertir al usuario si ya el nick esta en uso o el email ya se registro lo cual inhabilita el registro. una vez registrado envia a una pagina protegido por jwt y guard de angular.    
 
-## Running unit tests
+4. Autentificacion correcto y redireccion a ruta protejida
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
-```bash
-ng test
-```
+     ![alt text](/Readme-images/imagen-home.png)
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+     si la autentificacion sale bien seras redirigo a una pagina protegida por el guard, puedes probar eliminar del localstorage los token que validan el inicio para verificar la funcionalidad del guard, solo mantiene componentes de prueba que vienen de otros puntos dado que la funcionalidad de este codigo es mostrar autentificacion.
